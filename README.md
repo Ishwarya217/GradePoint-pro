@@ -1,5 +1,5 @@
 # GradePoint-pro
-**Projet Overview**
+**Project Overview**
 The project consists of a Java-based desktop application built with the
 Swing library. It employs a CardLayout to manage three distinct panels:
 the Home Page, GPA Calculator, and CGPA Calculator. 
