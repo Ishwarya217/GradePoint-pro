@@ -1,66 +1,51 @@
-# GradePoint-pro
-**Project Overview**
-The project consists of a Java-based desktop application built with the
-Swing library. It employs a CardLayout to manage three distinct panels:
-the Home Page, GPA Calculator, and CGPA Calculator. 
+**GradePoint-Pro**                                                                                                                                         
 
-Each panel provides specific functionality:
-1. Home Page: Serves as the welcome screen and includes navigation options to other panels.
-2. GPA Calculator: Allows users to input subject grades and credit hours to compute their semester GPA.
-3. CGPA Calculator: Lets users input semester-wise GPAs and credit hours to calculate their overall CGPA.
+**Project Overview :**                                                                                                                 GradePoint-Pro is a Java-based desktop application designed to simplify academic performance management. Built using the Swing library, the application features a login page for user authentication and backend database connectivity for enhanced functionality. It utilizes a CardLayout to navigate between multiple panels seamlessly:
 
-**The key functions of the GPA and CGPA Calculator System are as follows:**
+_**1. Login Page:**_ User authentication to ensure secure access.                                                                                 
+_**2. Home Page:**_ A welcome screen with navigation options to access other features.                                                            
+_**3. GPA Calculator:**_ Calculate semester GPA based on input grades and credit hours.                                                            
+_**4. CGPA Calculator:**_ Compute overall CGPA using semester-wise GPA and credit hours.                                                           
 
-**1. Input Collection:**
+**Key Features**                                                                                                                                                     
+**1. User Authentication:**
+Secure login functionality with backend database integration.                                                                                  
+Verifies credentials before granting access to the main application.                                                                            
 
-o The system allows users to input essential data, including
-course names, grades obtained, and credit hours for each
-subject.
-o It validates the data to ensure correctness and completeness
-before proceeding with the calculations.
+**2. Input Collection:**
+Allows users to input course details, grades, and credit hours.
+Validates inputs to ensure data correctness and completeness.                                                                                      
 
-**2. Computation of GPA:**
+**3. GPA Computation:**
+Calculates semester GPA using a weighted average of grades and credit hours.                                                                                          
+Formula:                                                                                                                                                              
+**GPA = ∑( Grade Points × Credit Hours ) /Total Credit Hours**
 
-o The system calculates GPA for a single semester based on a
-weighted average of grades and their corresponding credit
-hours.
+ 
+**4. CGPA Computation:**
+Aggregates semester GPAs to compute the overall CGPA.                                                                                                                  
+Formula:                                                                                                                                                              
+ **CGPA = ∑(GPA of each semester × Credit Hours )/Total Credit Hours**
 
-o Formula used:
-GPA=∑(Grade Points * Credit hrs)/total Credit hrs
+**5. Error Handling:** 
+Detects invalid inputs (e.g., missing credit hours, out-of-range grades).
+Prompts the user to correct errors for reliable calculations.
 
-**3. Computation of CGPA:**
 
-o For multiple semesters, the system computes CGPA by
-aggregating all GPA scores over the semesters and their
-respective credit hours.
+**6. Output Display:**
+Presents GPA and CGPA results in an easy-to-read format.
+Includes semester-wise performance trends for better insights.
 
-o Formula used:
-CGPA=∑(GPA’s Earned in all semester)/Total
-no.of.Semester
+**7. Database Integration:**
+Stores user credentials securely in the database.
+Manages and retrieves calculation history for returning users.
 
-**4. Error Handling:**
+**8. Customizability:**
+Supports various grading systems to accommodate different academic frameworks.
 
-o The system detects invalid inputs (e.g., grades outside the
-grading scale or missing credit hours) and prompts the user to
-correct them.
-o This feature enhances the reliability of the calculations.
+**Future Enhancements :**                                                                                                                                            
+_**1. Role-Based Access:**_ Support for student and admin roles.
 
-**5. Output Display:**
+_**2. Cloud Integration:**_ Enable synchronization of data across devices.
 
-o After computation, the system displays the GPA and CGPA in
-a clear, easy-to-read format.
-o It also provides additional insights, such as semester-wise
-performance trends, if included as an enhancement.
-
-**6. Data Management:**
-
-o The system is designed to temporarily store user inputs and
-computation results for the session.
-o It does not retain sensitive information, ensuring data privacy
-and security.
-
-**7. Customizability:**
-
-o The application can be configured to support various grading
-systems, making it adaptable to different academic
-frameworks.
+_**3. Analytics Dashboard:**_ Visualize GPA and CGPA trends with charts and graphs.
