@@ -44,8 +44,6 @@ Manages and retrieves calculation history for returning users.
 Supports various grading systems to accommodate different academic frameworks.
 
 **Future Enhancements :**                                                                                                                                            
-_**1. Role-Based Access:**_ Support for student and admin roles.
-
-_**2. Cloud Integration:**_ Enable synchronization of data across devices.
-
+_**1. Role-Based Access:**_ Support for student and admin roles.                                                                                                                                                     
+_**2. Cloud Integration:**_ Enable synchronization of data across devices.                                                                                                                                         
 _**3. Analytics Dashboard:**_ Visualize GPA and CGPA trends with charts and graphs.
