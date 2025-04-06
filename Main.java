@@ -1,4 +1,4 @@
-package cgpa_gpa_calculator;    //package name
+package cgpa_gpa_calculator;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Main {
+
     private JFrame frame;
     private CardLayout cardLayout;
     private JPanel mainPanel;
@@ -46,6 +47,8 @@ public class Main {
         // Show the login page by default
         cardLayout.show(mainPanel, "Login");
     }
+
+
     // Methods for creating pages
     private void createLoginPage() {
         LoginPage loginPage = new LoginPage(mainPanel, cardLayout);
