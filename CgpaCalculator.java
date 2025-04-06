@@ -4,9 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import cgpa_gpa_calculator.CardPanelCGPA;
+
 
 public class CgpaCalculator {
-    private JPanel cgpaPanel;
+    private JPanel cgpaWrapper;
     private CardLayout cardLayout;
     private JPanel mainPanel;
     private JLabel cgpaLabel;
@@ -19,83 +21,131 @@ public class CgpaCalculator {
     }
 
     private void createCgpaPage() {
-        cgpaPanel = new JPanel();
-        cgpaPanel.setBackground(new Color(214, 174, 123)); // Light orange color
-        cgpaPanel.setLayout(new GridBagLayout());
+        // OUTER PANEL that holds the scroll view
+        cgpaWrapper = new JPanel(new BorderLayout());
+        cgpaWrapper.setBackground(new Color(244, 246, 247));
+
+        // INNER content panel for scroll
+        JPanel contentPanel = new JPanel(new GridBagLayout());
+        contentPanel.setBackground(new Color(244, 246, 247));
+        GridBagConstraints rootGbc = new GridBagConstraints();
+        rootGbc.insets = new Insets(30, 30, 30, 30);
+
+        // CardPanel for CGPA Calculator UI
+        CardPanelCGPA cardPanel = new CardPanelCGPA(30);
+        cardPanel.setPreferredSize(new Dimension(580, 800));
+        cardPanel.setBackground(Color.WHITE);
+        cardPanel.setLayout(new GridBagLayout());
+
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.insets = new Insets(8, 10, 8, 10);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
+        Font titleFont = new Font("Segoe UI", Font.BOLD, 34);
+        Font labelFont = new Font("Segoe UI", Font.BOLD, 20);
+        Font fieldFont = new Font("Segoe UI", Font.PLAIN, 20);
+        Font buttonFont = new Font("Segoe UI", Font.BOLD, 20);
+
         JLabel titleLabel = new JLabel("CGPA Calculator", JLabel.CENTER);
-        titleLabel.setFont(new Font("Verdana", Font.BOLD, 38));
-        titleLabel.setForeground(new Color(18, 78, 102));
+        titleLabel.setFont(titleFont);
+        titleLabel.setForeground(new Color(31, 40, 51));
         gbc.gridwidth = 2;
         gbc.gridx = 0;
         gbc.gridy = 0;
-        cgpaPanel.add(titleLabel, gbc);
+        cardPanel.add(titleLabel, gbc);
 
-        JLabel instructionLabel = new JLabel("Enter Your GPA for Each Semester ");
-        instructionLabel.setFont(new Font("Verdana", Font.BOLD, 20));
+        JLabel instructionLabel = new JLabel("Enter Your GPA for Each Semester");
+        instructionLabel.setFont(labelFont);
+        instructionLabel.setHorizontalAlignment(SwingConstants.CENTER);
         gbc.gridy = 1;
-        cgpaPanel.add(instructionLabel, gbc);
+        cardPanel.add(instructionLabel, gbc);
 
-        gpaFields = new JTextField[8]; // Eight GPA inputs for example
+        gpaFields = new JTextField[8];
 
         for (int i = 0; i < gpaFields.length; i++) {
             JLabel gpaLabel = new JLabel("Sem " + (i + 1) + ":");
-            gpaLabel.setFont(new Font("Verdana", Font.PLAIN, 18));
+            gpaLabel.setFont(labelFont);
+            gbc.gridwidth = 1;
             gbc.gridx = 0;
             gbc.gridy = i + 2;
-            cgpaPanel.add(gpaLabel, gbc);
+            cardPanel.add(gpaLabel, gbc);
 
             gpaFields[i] = new JTextField(10);
-            gpaFields[i].setFont(new Font("Verdana", Font.PLAIN, 18));
+            gpaFields[i].setFont(fieldFont);
             gbc.gridx = 1;
-            cgpaPanel.add(gpaFields[i], gbc);
+            cardPanel.add(gpaFields[i], gbc);
         }
 
-        JButton calculateCgpaButton = new JButton("Calculate CGPA");
-        calculateCgpaButton.setFont(new Font("Verdana", Font.BOLD, 22));
-        calculateCgpaButton.setForeground(Color.WHITE);
-        calculateCgpaButton.setBackground(Color.GREEN);
-        calculateCgpaButton.addActionListener(new CalculateCgpaListener());
+        JButton calculateButton = new JButton("Calculate CGPA");
+        calculateButton.setFont(buttonFont);
+        calculateButton.setBackground(new Color(46, 204, 113));
+        calculateButton.setForeground(Color.WHITE);
+        calculateButton.setFocusPainted(false);
+        calculateButton.addActionListener(new CalculateCgpaListener());
         gbc.gridwidth = 2;
         gbc.gridx = 0;
         gbc.gridy = gpaFields.length + 2;
-        cgpaPanel.add(calculateCgpaButton, gbc);
+        cardPanel.add(calculateButton, gbc);
 
-        // Go Back Button
-        JButton goBackButton = new JButton("Go Back");
-        goBackButton.setFont(new Font("Verdana", Font.BOLD, 18));
-        goBackButton.setForeground(Color.WHITE);
-        goBackButton.setBackground(new Color(0, 0, 255));
-        goBackButton.addActionListener(e -> cardLayout.show(mainPanel, "Home"));
+        JButton resetButton = new JButton("Reset");
+        resetButton.setFont(buttonFont);
+        resetButton.setBackground(new Color(231, 76, 60));
+        resetButton.setForeground(Color.WHITE);
+        resetButton.setFocusPainted(false);
+        resetButton.addActionListener(e -> resetFields());
         gbc.gridy = gpaFields.length + 3;
-        cgpaPanel.add(goBackButton, gbc);
+        cardPanel.add(resetButton, gbc);
+
+        JButton backButton = new JButton("Go Back");
+        backButton.setFont(buttonFont);
+        backButton.setBackground(new Color(52, 152, 219));
+        backButton.setForeground(Color.WHITE);
+        backButton.setFocusPainted(false);
+        backButton.addActionListener(e -> cardLayout.show(mainPanel, "Home"));
+        gbc.gridy = gpaFields.length + 4;
+        cardPanel.add(backButton, gbc);
 
         cgpaLabel = new JLabel("CGPA: ");
-        cgpaLabel.setFont(new Font("Verdana", Font.BOLD, 22));
-        gbc.gridy = gpaFields.length + 4;
-        cgpaPanel.add(cgpaLabel, gbc);
+        cgpaLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        gbc.gridy = gpaFields.length + 5;
+        cardPanel.add(cgpaLabel, gbc);
+
+        contentPanel.add(cardPanel, rootGbc);
+
+        JScrollPane scrollPane = new JScrollPane(contentPanel);
+        scrollPane.setBorder(null);
+        scrollPane.setOpaque(false);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+        scrollPane.getViewport().setOpaque(false);
+
+        cgpaWrapper.add(scrollPane, BorderLayout.CENTER);
+
+        mainPanel.add(cgpaWrapper, "CGPA Calculator");
     }
 
-    // Inner class for CGPA calculation
+    private void resetFields() {
+        for (JTextField field : gpaFields) {
+            field.setText("");
+        }
+        cgpaLabel.setText("CGPA: ");
+    }
+
     private class CalculateCgpaListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             double totalGpa = 0.0;
             int count = 0;
 
-            for (JTextField gpaField : gpaFields) {
-                String text = gpaField.getText().trim();
+            for (JTextField field : gpaFields) {
+                String text = field.getText().trim();
                 if (!text.isEmpty()) {
                     try {
                         totalGpa += Double.parseDouble(text);
                         count++;
                     } catch (NumberFormatException ex) {
                         JOptionPane.showMessageDialog(
-                                cgpaPanel,
-                                "Please enter valid numeric values for all GPA fields.",
+                                cgpaWrapper,
+                                "Please enter valid numeric values.",
                                 "Input Error",
                                 JOptionPane.ERROR_MESSAGE
                         );
@@ -110,6 +160,6 @@ public class CgpaCalculator {
     }
 
     public JPanel getPanel() {
-        return cgpaPanel;
+        return cgpaWrapper;
     }
 }
