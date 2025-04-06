@@ -6,9 +6,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class GpaCalculator {
-    private JPanel panel;
+    private JPanel mainPanel;
     private CardLayout cardLayout;
-    private JPanel mainPanel, homePanel, calculatePanel, cgpaPanel;
+    private JPanel calculatePanel;
     private JComboBox<String>[] gradeFields;
     private JComboBox<Integer>[] creditFields;
     private JLabel totalCreditsLabel, gpaLabel;
@@ -20,87 +20,112 @@ public class GpaCalculator {
     }
 
     private void createCalculatePage() {
-        calculatePanel = new JPanel();
-        calculatePanel.setBackground(new Color(214, 174, 123));
-        calculatePanel.setLayout(new GridBagLayout());
+        calculatePanel = new JPanel(new GridBagLayout());
+        calculatePanel.setBackground(new Color(244, 246, 247));
+        GridBagConstraints rootGbc = new GridBagConstraints();
+        rootGbc.insets = new Insets(40, 40, 40, 40);
+
+        // Rounded panel (like a vertical card)
+        CardPanel cardPanel = new CardPanel(30);
+        cardPanel.setLayout(new GridBagLayout());
+        cardPanel.setPreferredSize(new Dimension(580, 780));
+        cardPanel.setBackground(Color.WHITE);
+
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.insets = new Insets(15, 15, 15, 15);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
+        Font titleFont = new Font("Segoe UI", Font.BOLD, 32);
+        Font labelFont = new Font("Segoe UI", Font.BOLD, 18);
+        Font fieldFont = new Font("Segoe UI", Font.PLAIN, 16);
+        Font buttonFont = new Font("Segoe UI", Font.BOLD, 18);
+
         JLabel titleLabel = new JLabel("GPA Calculator", JLabel.CENTER);
-        titleLabel.setFont(new Font("Verdana", Font.BOLD, 38));
+        titleLabel.setFont(titleFont);
         titleLabel.setForeground(new Color(31, 40, 51));
-        gbc.gridwidth = 2;
+        gbc.gridwidth = 4;
         gbc.gridx = 0;
         gbc.gridy = 0;
-        calculatePanel.add(titleLabel, gbc);
+        cardPanel.add(titleLabel, gbc);
 
         String[] subjects = {"Subject 1", "Subject 2", "Subject 3", "Subject 4", "Subject 5", "Subject 6"};
         gradeFields = new JComboBox[6];
         creditFields = new JComboBox[6];
-
         String[] gradeOptions = {"O", "A+", "A", "B+", "B", "C"};
 
         for (int i = 0; i < subjects.length; i++) {
             JLabel subjectLabel = new JLabel(subjects[i] + ":");
-            subjectLabel.setFont(new Font("Verdana", Font.PLAIN, 20));
+            subjectLabel.setFont(labelFont);
             gbc.gridwidth = 1;
             gbc.gridx = 0;
             gbc.gridy = i + 1;
-            calculatePanel.add(subjectLabel, gbc);
+            cardPanel.add(subjectLabel, gbc);
 
             gradeFields[i] = new JComboBox<>(gradeOptions);
-            gradeFields[i].setFont(new Font("Verdana", Font.PLAIN, 16));
+            gradeFields[i].setFont(fieldFont);
+            gradeFields[i].setPreferredSize(new Dimension(100, 30));
             gbc.gridx = 1;
-            calculatePanel.add(gradeFields[i], gbc);
+            cardPanel.add(gradeFields[i], gbc);
 
             JLabel creditLabel = new JLabel("Credit:");
-            creditLabel.setFont(new Font("Verdana", Font.PLAIN, 20));
+            creditLabel.setFont(labelFont);
             gbc.gridx = 2;
-            calculatePanel.add(creditLabel, gbc);
+            cardPanel.add(creditLabel, gbc);
 
             creditFields[i] = new JComboBox<>(new Integer[]{0, 1, 2, 3, 4});
-            creditFields[i].setFont(new Font("Verdana", Font.PLAIN, 16));
+            creditFields[i].setFont(fieldFont);
+            creditFields[i].setPreferredSize(new Dimension(100, 30));
             gbc.gridx = 3;
-            calculatePanel.add(creditFields[i], gbc);
+            cardPanel.add(creditFields[i], gbc);
         }
 
         JButton calculateButton = new JButton("Calculate GPA");
-        calculateButton.setFont(new Font("Verdana", Font.BOLD, 22));
+        calculateButton.setFont(buttonFont);
         calculateButton.setForeground(Color.WHITE);
-        calculateButton.setBackground(Color.GREEN);
+        calculateButton.setBackground(new Color(46, 204, 113));
+        calculateButton.setFocusPainted(false);
         calculateButton.addActionListener(new CalculateGPAListener());
         gbc.gridwidth = 4;
         gbc.gridx = 0;
         gbc.gridy = subjects.length + 1;
-        calculatePanel.add(calculateButton, gbc);
+        cardPanel.add(calculateButton, gbc);
 
         JButton resetButton = new JButton("Reset");
-        resetButton.setFont(new Font("Verdana", Font.BOLD, 18));
+        resetButton.setFont(buttonFont);
         resetButton.setForeground(Color.WHITE);
-        resetButton.setBackground(new Color(255, 0, 0));
+        resetButton.setBackground(new Color(231, 76, 60));
+        resetButton.setFocusPainted(false);
+        resetButton.addActionListener(e -> resetFields());
         gbc.gridy = subjects.length + 2;
-        calculatePanel.add(resetButton, gbc);
+        cardPanel.add(resetButton, gbc);
 
         JButton goBackButton = new JButton("Go Back");
-        goBackButton.setFont(new Font("Verdana", Font.BOLD, 18));
+        goBackButton.setFont(buttonFont);
         goBackButton.setForeground(Color.WHITE);
-        goBackButton.setBackground(new Color(0, 0, 255));
-        resetButton.addActionListener(e -> resetFields());
+        goBackButton.setBackground(new Color(52, 152, 219));
+        goBackButton.setFocusPainted(false);
         goBackButton.addActionListener(e -> cardLayout.show(mainPanel, "Home"));
         gbc.gridy = subjects.length + 3;
-        calculatePanel.add(goBackButton, gbc);
+        cardPanel.add(goBackButton, gbc);
 
         totalCreditsLabel = new JLabel("Total Credits: ");
-        totalCreditsLabel.setFont(new Font("Verdana", Font.BOLD, 20));
+        totalCreditsLabel.setFont(new Font("Segoe UI", Font.BOLD, 18));
         gbc.gridy = subjects.length + 4;
-        calculatePanel.add(totalCreditsLabel, gbc);
+        cardPanel.add(totalCreditsLabel, gbc);
 
         gpaLabel = new JLabel("GPA: ");
-        gpaLabel.setFont(new Font("Verdana", Font.BOLD, 22));
+        gpaLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
         gbc.gridy = subjects.length + 5;
-        calculatePanel.add(gpaLabel, gbc);
+        cardPanel.add(gpaLabel, gbc);
+
+        calculatePanel.add(cardPanel, rootGbc);
+
+        JScrollPane scrollPane = new JScrollPane(calculatePanel);
+        scrollPane.setBorder(null);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+        mainPanel.add(scrollPane, "GPA Calculator");
     }
+
 
     private void resetFields() {
         for (JComboBox<String> gradeField : gradeFields) {
@@ -117,7 +142,6 @@ public class GpaCalculator {
         return calculatePanel;
     }
 
-    // Inner class for GPA calculation listener
     private class CalculateGPAListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -145,23 +169,15 @@ public class GpaCalculator {
             }
         }
 
-        // Method to convert grade to grade point
         private double getGradePoint(String grade) {
             switch (grade) {
-                case "O":
-                    return 10.0;
-                case "A+":
-                    return 9.0;
-                case "A":
-                    return 8.0;
-                case "B+":
-                    return 7.0;
-                case "B":
-                    return 6.0;
-                case "C":
-                    return 5.0;
-                default:
-                    return 0.0; // for case of no grade selected
+                case "O": return 10.0;
+                case "A+": return 9.0;
+                case "A": return 8.0;
+                case "B+": return 7.0;
+                case "B": return 6.0;
+                case "C": return 5.0;
+                default: return 0.0;
             }
         }
     }
